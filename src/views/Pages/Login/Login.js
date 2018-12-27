@@ -1,8 +1,36 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import {GraphQLClient} from 'graphql-request';
+import {login} from '../../../graphql/queries';
 
 class Login extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+        username: 'soner',
+        password: '1'
+    };
+  }
+
+  onSignIn(e) {
+      e.preventDefault()
+
+      const client = new GraphQLClient("https://sonnod.herokuapp.com/graphql", {headers: {}})
+      client.request(login.query(), login.variables(this.state.username, this.state.password))
+          .then(
+              data => {
+                  console.log(data.login);
+                  this.props.history.push('/');
+              },
+          )
+          .catch(err => {
+              console.log(err.response.errors[0].message);
+          });
+  }
+
   render() {
     return (
       <div className="app flex-row align-items-center">
@@ -21,7 +49,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="Username" autoComplete="username" />
+                        <Input type="text" placeholder="Username" autoComplete="username" name="username" value={this.state.username}/>
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -29,11 +57,12 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Password" autoComplete="current-password" />
+                        <Input type="password" placeholder="Password" autoComplete="current-password" name="password" value={this.state.password}/>
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4">Login</Button>
+                          <Button color="primary" className="px-4"
+                                  onClick={e => this.onSignIn(e)}>Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
                           <Button color="link" className="px-0">Forgot password?</Button>

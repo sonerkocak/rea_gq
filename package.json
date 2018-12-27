@@ -36,7 +36,8 @@
     "react-test-renderer": "^16.7.0",
     "reactstrap": "^6.5.0",
     "simple-line-icons": "^2.4.1",
-    "serve": "^10.1.1"
+    "serve": "^10.1.1",
+    "graphql-request": "1.8.2"
   },
   "devDependencies": {
     "react-scripts": "^2.1.1"
