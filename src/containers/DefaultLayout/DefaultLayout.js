@@ -18,6 +18,7 @@ import {
 import navigation from '../../_nav';
 // routes config
 import routes from '../../routes';
+import {gq} from '../../graphql/queries';
 
 const DefaultAside = React.lazy(() => import('./DefaultAside'));
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
@@ -29,6 +30,7 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     e.preventDefault()
+    gq.token = '';
     this.props.history.push('/login')
   }
 

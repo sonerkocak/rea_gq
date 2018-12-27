@@ -1,3 +1,16 @@
+import {GraphQLClient} from 'graphql-request';
+
+export const gq = {
+    token : '',
+    client: function() {
+        let headers = {};
+        if (this.token) {
+            headers = { 'Authorization': 'Bearer ' + this.token };
+        }
+        return new GraphQLClient("https://sonnod.herokuapp.com/graphql", {headers});
+    },
+};
+
 export const login = {
     query: function() {
         return`query login($username: String!, $password: String!){
@@ -9,20 +22,24 @@ export const login = {
     }
 };
 
-
-
-export const seviyeDersleri = {
+export const kurslar = {
     query: function() {
-        return`query seviyeDersleri($seviye: Seviye!) {
-                  seviyeDersleri(seviye: $seviye){
-                    id
-                    adi
-                    seviye
+        return`query getCourses($topic: String!) {
+                    kurslar: courses(topic:$topic) {
+                        ...courseFields
                   }
-                }`;
+               }
+                
+               fragment courseFields on Course {
+                  title
+                  author
+                  description
+                  topic
+                  url
+                  calc
+               }`;
     },
-    variables: function(seviye) {
-        return {seviye};
+    variables: function(topic) {
+        return {topic};
     }
 };
-
