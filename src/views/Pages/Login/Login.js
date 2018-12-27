@@ -24,6 +24,8 @@ class Login extends Component {
                 if (data.login) {
                     gq.token =  data.login;
                     this.props.history.push('/');
+                } else {
+                    this.setState({error: 'Login bilgileri geçersiz!'});
                 }
               },
           )
@@ -94,10 +96,10 @@ class Login extends Component {
               </CardGroup>
             </Col>
           </Row>
+            <Row className="justify-content-center">
+                {this.state.error}
+            </Row>
         </Container>
-          <div>
-              {this.state.error}
-          </div>
       </div>
     );
   }
